@@ -1,4 +1,6 @@
-FROM nexus.redup-team.ru/library/astra/ubi18:1.8.5
+ARG BASE_IMAGE=debian:stable-slim
+
+FROM ${BASE_IMAGE} AS builder
 
 ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
