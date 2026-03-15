@@ -1,0 +1,58 @@
+name: Upload Docker Image
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+        - base_image: "debian:stable-slim"
+          tag_suffix: "3.14.2-nogil-slim"
+        - base_image: "registry.astralinux.ru/library/astra/ubi18:1.8.5"
+          tag_suffix: "3.14.2-nogil-ubi18-1.8.5"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version
+        id: version
+        run: echo "version=$(cat VERSION | tr -d '\n')" >> $GITHUB_OUTPUT
+
+      - name: Docker meta
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: ${{ secrets.DOCKERHUB_USER }}/${{ github.event.repository.name }}
+          tags: |
+            type=raw,value=${{ steps.version.outputs.version }}-${{ matrix.tag_suffix }}
+          flavor: |
+            latest=false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          build-args: |
+            BASE_IMAGE=${{ matrix.base_image }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
