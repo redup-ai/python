@@ -19,17 +19,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get version
-        id: version
-        run: echo "version=$(cat VERSION | tr -d '\n')" >> $GITHUB_OUTPUT
-
       - name: Docker meta
         id: meta
         uses: crazy-max/ghaction-docker-meta@v2
         with:
           images: ${{ secrets.DOCKERHUB_USER }}/${{ github.event.repository.name }}
           tags: |
-            type=raw,value=${{ steps.version.outputs.version }}-${{ matrix.tag_suffix }}
+            type=raw,value=${{ matrix.tag_suffix }}
           flavor: |
             latest=false
 
