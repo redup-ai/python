@@ -12,13 +12,13 @@ jobs:
       matrix:
         include:
         - base_image: "debian:stable-slim"
-          tag_suffix: "3.14.2-nogil-slim"
+          tag_suffix: "3.14.6-nogil-slim"
         - base_image: "registry.astralinux.ru/library/astra/ubi18:1.8.5"
-          tag_suffix: "3.14.2-nogil-ubi18-1.8.5"
+          tag_suffix: "3.14.6-nogil-ubi18-1.8.5"
         - base_image: "nvidia/cuda:13.2.1-cudnn-runtime-ubuntu24.04"
-          tag_suffix: "3.14.2-nogil-ubuntu24.04-cuda13.2.1-cudnn-runtime"
+          tag_suffix: "3.14.6-nogil-ubuntu24.04-cuda13.2.1-cudnn-runtime"
         - base_image: "nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04"
-          tag_suffix: "3.14.2-nogil-ubuntu24.04-cuda12.8.1-cudnn-runtime"
+          tag_suffix: "3.14.6-nogil-ubuntu24.04-cuda12.8.1-cudnn-runtime"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
