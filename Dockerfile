@@ -22,7 +22,7 @@ apt-get install -y --no-install-recommends \
 	libgdbm-dev liblzma-dev libncursesw5-dev libreadline-dev libsqlite3-dev libssl-dev \
 	libzstd-dev make tk-dev uuid-dev wget xz-utils zlib1g-dev; \
 if [ "$ENABLE_JIT" = "yes" ]; then \
-	apt-get install -y --no-install-recommends python3; \
+	apt-get install -y --no-install-recommends python3 lsb-release; \
 	wget -O /tmp/llvm.sh https://apt.llvm.org/llvm.sh; \
 	chmod +x /tmp/llvm.sh; \
 	/tmp/llvm.sh 21; \
